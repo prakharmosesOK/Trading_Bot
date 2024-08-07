@@ -45,10 +45,21 @@ Follow these steps to set up the Trade Bot on your system:
 3. Set up API keys:
     - Obtain API keys from your preferred stock exchange. We recommend Alpaca.
 
-##  🧑🏽‍💻 Usage
-Run the bot with the following command:
+4. Navigate to frontend and install dependencies and then start:
     ```bash
-    uvicorn main:app --reload --host 0.0.0.0 --port:8080
+    cd frontend
+    ```
+    ```bash
+    npm install
+    ```
+    ```bash
+    npm start
+    ```
+
+##  🧑🏽‍💻 Usage
+Run the bot with the following command in the root folder:
+    ```bash
+    uvicorn main:app --reload --host 0.0.0.0 --port:8000
     ```
 
 Monitor the bot's output for real-time updates, trade executions, and performance metrics.
@@ -77,6 +88,10 @@ https://github.com/codeclubiittp/Trading_bot/assets/113628188/39490e83-2369-4714
 🎬 If already registered then authenticate as shown.
 
 https://github.com/codeclubiittp/Trading_bot/assets/113628188/ed7c9f10-6def-4396-8591-c7afc6fc3178
+
+🎬 Demo Video of the site
+
+https://youtu.be/n2K_I6KyXKw?si=Qo0uuGHkcFWSYW3Z
 
 ### 📎 Available Endpoints:
 
