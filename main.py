@@ -13,7 +13,6 @@ from trade import schemas, mongodb
 import pytz
 
 # Define the origins that are allowed to access the backend
-# origins = ["http://localhost:3000"]
 
 app = FastAPI()
 
