@@ -1,0 +1,27 @@
+from fastapi import APIRouter, Depends, status, HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
+from ..import schemas, token, mongodb
+from .. hashing import Hash
+from sqlalchemy.orm import Session
+
+router = APIRouter(
+    tags = ['Authentication']
+)
+
+users = mongodb.users
+user_helper = mongodb.user_helper
+
+@router.post('/login', status_code = status.HTTP_200_OK)
+async def login(request: schemas.Login):
+    user = users.find_one({"email": request.username})
+    if not user:
+        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, detail = f'Invalid Credentials')
+    if not Hash.verify(user['password'], request.password):
+        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, detail = f'Incorrect Password')
+    # Generate a JWT token and return it
+    access_token = token.create_access_token(data={"sub": user['email']})
+    return {"access_token": access_token, "token_type": "bearer", "username": user['user_name'], "email": user['email'], "id": str(user['_id']), "api_key_private": user['api_key_private'], "api_key_public": user['api_key_public'], "base_url": user['base_url'], "current_balance": 0, "profit": 0}
+
+@router.post('/logout', status_code = status.HTTP_204_NO_CONTENT)
+async def logout():
+    return {"message": "User logged out successfully"}
