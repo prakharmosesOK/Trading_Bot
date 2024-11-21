@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation'
 import { useAccount } from '@/context/AccountContext'
 
 export default function MobileMenu() {
-  const { accountId, jwtToken } = useAccount()
+  const { accountId } = useAccount()
   const pathname = usePathname()
 
   const [mobileNavOpen, setMobileNavOpen] = useState<boolean>(false)
@@ -104,15 +104,15 @@ export default function MobileMenu() {
               Our Predictions
             </Link>
           </li>
-          {jwtToken !== '' && <li>
+          {/* {jwtToken !== '' && <li>
             <Link
               href={`/profile/${accountId}`}
               className={`font-medium hover:text-gray-200 px-4 py-3 flex items-center transition duration-150 ease-in-out ${findActiveLink(`/profile/${accountId}`)}`}
             >
               Profile
             </Link>
-          </li>}
-          {jwtToken === '' && <><li>
+          </li>} */}
+          {/* {jwtToken === '' && <><li>
             <Link
               href="/signin"
               className="flex font-medium w-full text-purple-600 hover:text-gray-200 py-2 justify-center" onClick={() => setMobileNavOpen(false)}
@@ -127,7 +127,7 @@ export default function MobileMenu() {
               >
                 Sign up
               </Link>
-            </li></>}
+            </li></>} */}
         </ul>
       </nav>
     </div>
