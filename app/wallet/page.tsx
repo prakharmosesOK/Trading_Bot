@@ -1,14 +1,121 @@
 "use client"
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 // Importing components
 import NavButton from '@/components/navButton';
 import ModelViewer from '@/components/modelViewer';
 
+// Importing context
+import { useAccount } from '@/context/AccountContext';
+
 // Variables
 const maxPageNumbersToShow = 5;
 
+const trasactionArray = [
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+    { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
+    { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
+]
+
 export default function Wallet() {
+    const { account } = useAccount();
+    const router = useRouter();
+
+    // Define states
     const [wallet, setWallet] = useState({
         real: {
             total: 32,
@@ -24,104 +131,7 @@ export default function Wallet() {
         }
     })
     const [type, setType] = useState('Real');
-    const [transactions, setTransactions] = useState([
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-    ])
+    const [transactions, setTransactions] = useState([])
     const [totalPages, setTotalPages] = useState(Math.ceil(transactions.length / 10));
     const [currentPage, setCurrentPage] = useState(1);
     const [pageOffset, setPageOffset] = useState(0);
@@ -145,7 +155,7 @@ export default function Wallet() {
         const end = Math.min(pageOffset + maxPageNumbersToShow, totalPages);
         return Array.from({ length: end - start + 1 }, (_, i) => start + i);
     };
-    
+
     const handleDownloadReceipt = (id: string) => {
         // Download receipt
     }
@@ -154,7 +164,53 @@ export default function Wallet() {
 
     useEffect(() => {
         // Fetch transactions
+        const fetchTransactions = async () => {
+            try {
+                if (!account.username) {
+                    throw new Error('No account username found');
+                }
+                const response = await fetch(`https://trading-bot-lmca.onrender.com/user/${account.username}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`,
+                    },
+                });
+                const data = await response.json();
+
+                if (response.status === 200) {
+                    console.log("The wallet data recieved is: ", data.data);
+                    console.log("The type of data recieved are: ", typeof data.data);
+                    if (data?.transactions) {
+                        setTransactions(data.transactions);
+                    }
+                    setWallet({
+                        real: {
+                            ...wallet.real,
+                            total: data.data.current_balance,
+                            profit: data.data.profit,
+                        },
+                        paper: {
+                            ...wallet.paper,
+                            total: data.data.current_balance,
+                            profit: data.data.profit,
+                        }
+                    });
+                } else {
+                    throw new Error('Failed to fetch transactions');
+                }
+            } catch (error) {
+                console.error(error);
+                router.push('/signin');
+            }
+        }
+
+        fetchTransactions();
     }, [type]);
+
+    useEffect(() => {
+        console.log("The updated wallet is: ", wallet);
+    }, [wallet])
 
     return (
         <main>

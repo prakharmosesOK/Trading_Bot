@@ -34,7 +34,7 @@ export const AccountProvider: React.FC<{ children: ReactNode }> = ({ children })
       return;
     }
     try {
-      const response = await fetch('http://127.0.0.1:8000/user/', {
+      const response = await fetch('https://trading-bot-lmca.onrender.com/user/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ export const AccountProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/login', {
+      const response = await fetch('https://trading-bot-lmca.onrender.com/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -78,9 +78,10 @@ export const AccountProvider: React.FC<{ children: ReactNode }> = ({ children })
           password: password
         }),
       })
-      console.log("The response recieved is: ", response);
+
       if (response.ok || response.status === 200) {
         const data = await response.json();
+        console.log("The login response recieved is: ", data);
         localStorage.setItem('jwtToken', data.access_token);
         setAccountId(data.id);
         setAccount({
@@ -105,7 +106,7 @@ export const AccountProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   const logout = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/logout', {
+      const response = await fetch('https://trading-bot-lmca.onrender.com/logout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
