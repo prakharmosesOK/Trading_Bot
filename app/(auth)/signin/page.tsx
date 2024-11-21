@@ -1,12 +1,30 @@
-export const metadata = {
-    title: 'Sign In - Open PRO',
-    description: 'Page description',
-}
+"use client";
+
+// export const metadata = {
+//     title: 'Sign In - Open PRO',
+//     description: 'Page description',
+// }
 
 import Link from 'next/link'
 import Image from 'next/image'
+import { useState } from 'react'
+
+// Import context
+import { useAccount } from '@/context/AccountContext'
 
 export default function SignIn() {
+    const { login } = useAccount()
+
+    // Define states
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    // Define funciton
+    const handleLogin = (e: any) => {
+        e.preventDefault()
+        login(email, password)
+    }
+
     return (
         <main className="min-h-screen flex items-stretch text-white ">
             <div className="lg:flex w-1/2 hidden bg-gray-500 bg-no-repeat bg-cover relative items-center" style={{ backgroundImage: "url(https://images.unsplash.com/photo-1577495508048-b635879837f1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=675&q=80)" }}>
@@ -53,18 +71,18 @@ export default function SignIn() {
                     <p className="text-gray-100">
                         or use email your account
                     </p>
-                    <form action="" className="sm:w-2/3 w-full px-4 lg:px-0 mx-auto">
+                    <form onSubmit={handleLogin} className="sm:w-2/3 w-full px-4 lg:px-0 mx-auto">
                         <div className="pb-2 pt-4">
-                            <input type="email" name="email" id="email" placeholder="Email" className="block w-full p-4 text-lg rounded-xl bg-black" />
+                            <input type="email" name="email" id="email" placeholder="Email" value={email} onChange={(e: any) => setEmail(e.target.value)} className="block w-full p-4 text-lg rounded-xl bg-black" />
                         </div>
                         <div className="pb-2 pt-4">
-                            <input className="block w-full p-4 text-lg rounded-xl bg-black" type="password" name="password" id="password" placeholder="Password" />
+                            <input className="block w-full p-4 text-lg rounded-xl bg-black" type="password" name="password" id="password" value={password} onChange={(e: any) => setPassword(e.target.value)} placeholder="Password" />
                         </div>
                         <div className="text-right text-gray-400 hover:underline hover:text-gray-100">
                             <Link href="/reset-password">Forgot your password?</Link>
                         </div>
                         <div className="px-4 pb-2 pt-4">
-                            <button className="uppercase block w-full p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none">sign in</button>
+                            <button type="submit" className="uppercase block w-full p-4 text-lg rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none">sign in</button>
                         </div>
                         <div className="text-center text-gray-400">
                             Don't have an account! &nbsp;

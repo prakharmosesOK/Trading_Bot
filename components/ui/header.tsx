@@ -8,7 +8,7 @@ import { useAccount } from '@/context/AccountContext'
 
 export default function Header() {
   const pathname = usePathname()
-  const { accountId, jwtToken } = useAccount()
+  const { accountId, logout } = useAccount()
 
   function findActiveLink(path: string) {
     return pathname === path ? 'text-yellow-400' : 'text-purple-600'
@@ -68,15 +68,23 @@ export default function Header() {
                   Our Predictions
                 </Link>
               </li>
-              {jwtToken !== '' && <li>
-                <Link
-                  href={`/profile/${accountId}`}
-                  className={`font-medium hover:text-gray-200 px-4 py-3 flex items-center transition duration-150 ease-in-out ${findActiveLink(`/profile/${accountId}`)}`}
-                >
-                  Profile
-                </Link>
-              </li>}
-              {jwtToken === '' && <><li>
+              {accountId && accountId !== '' ? (<>
+                <li>
+                  <Link
+                    href={`/profile/${accountId}`}
+                    className={`font-medium hover:text-gray-200 px-4 py-3 flex items-center transition duration-150 ease-in-out ${findActiveLink(`/profile/${accountId}`)}`}
+                  >
+                    Profile
+                  </Link>
+                </li>
+                <li>
+                  <button
+                    onClick={logout}
+                    className="font-medium hover:text-gray-200 px-4 py-3 flex items-center transition duration-150 ease-in-out text-yellow-400"
+                  >Log Out</button>
+                </li>
+              </>) : (
+              <><li>
                 <Link
                   href="/signin"
                   className="font-medium hover:text-gray-200 px-4 py-3 flex items-center transition duration-150 ease-in-out"
@@ -89,7 +97,7 @@ export default function Header() {
                     Sign up
                   </Link>
                 </li>
-              </>}
+              </>)}
             </ul>
           </nav>
 

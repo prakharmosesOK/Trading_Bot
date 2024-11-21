@@ -3,31 +3,31 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 // Importing Context
 import { useAccount } from '../../../context/AccountContext'
 
 
 export default function Profile() {
-    const { accountId } = useAccount()
+    const { accountId, account } = useAccount()
+    const router = useRouter();
 
     // Defining state for the user's profile
     const [profile, setProfile] = useState({
-        name: 'Cleara Jones',
-        email: 'clearajones@gmail.com',
-        profilePicture: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNYLv3ILZTm1R35NsHkSwt4JSgral8pgRwDg&s',
-        privateKey: 'fgfmblgdrj s;',
-        publicKey: 'jdfogojvmrosj, ',
-        baseUrl: 'jmgov,go;fgs,cgpo'
+        name: account.username,
+        email: account.email,
+        profilePicture: account.profilePicture,
+        privateKey: account.api_key_private,
+        publicKey: account.api_key_public,
+        baseUrl: account.base_url
     })
     const [isPrivateVisible, setIsPrivateVisible] = useState(false);
     const [edit, setEdit] = useState(false);
 
     // If the user is not logged in, redirect them to the login page
     if (!accountId || accountId === '') {
-        useEffect(() => {
-            window.location.href = '/login'
-        }, [])
+        router.push('/signin');
     }
 
     const handleEditProfile = (e: React.FormEvent) => {
