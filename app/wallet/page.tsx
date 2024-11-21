@@ -131,7 +131,14 @@ export default function Wallet() {
         }
     })
     const [type, setType] = useState('Real');
-    const [transactions, setTransactions] = useState([])
+    interface Transaction {
+        transactionId: string;
+        date: Date;
+        category: string;
+        amount: number;
+    }
+
+    const [transactions, setTransactions] = useState<Transaction[]>([])
     const [totalPages, setTotalPages] = useState(Math.ceil(transactions.length / 10));
     const [currentPage, setCurrentPage] = useState(1);
     const [pageOffset, setPageOffset] = useState(0);
@@ -207,10 +214,6 @@ export default function Wallet() {
 
         fetchTransactions();
     }, [type]);
-
-    useEffect(() => {
-        console.log("The updated wallet is: ", wallet);
-    }, [wallet])
 
     return (
         <main>
@@ -368,10 +371,10 @@ export default function Wallet() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {transactions.slice((currentPage - 1) * 10, currentPage * 10).map((transaction) => (
-                                    <tr key={transaction.transactionId} className="border-b bg-gray-800 border-gray-700 hover:bg-gray-600">
+                                {Array.isArray(transactions) && transactions.length > 0 && transactions.slice((currentPage - 1) * 10, currentPage * 10).map((transaction) => (
+                                    <tr key={transaction?.transactionId} className="border-b bg-gray-800 border-gray-700 hover:bg-gray-600">
                                         <th scope="row" className="px-6 py-4 font-medium whitespace-nowrap">
-                                            <button onClick={() => handleDownloadReceipt(transaction.transactionId)} className="font-medium text-blue-500 hover:underline">{transaction.transactionId}</button>
+                                            <button onClick={() => handleDownloadReceipt(transaction?.transactionId)} className="font-medium text-blue-500 hover:underline">{transaction.transactionId}</button>
                                         </th>
                                         <td className="px-6 py-4">
                                             {transaction.date.toDateString()}
