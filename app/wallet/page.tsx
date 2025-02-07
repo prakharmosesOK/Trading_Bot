@@ -133,9 +133,10 @@ export default function Wallet() {
     const [type, setType] = useState('Real');
     interface Transaction {
         transactionId: string;
+        name: string;
         date: Date;
         category: string;
-        amount: number;
+        quantity: number;
     }
 
     const [transactions, setTransactions] = useState<Transaction[]>([])
@@ -171,44 +172,66 @@ export default function Wallet() {
 
     useEffect(() => {
         // Fetch transactions
+        // const fetchTransactions = async () => {
+        //     try {
+        //         if (!account.username) {
+        //             throw new Error('No account username found');
+        //         }
+        //         const response = await fetch(`https://trading-bot-lmca.onrender.com/user/${account.username}`, {
+        //             method: 'GET',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`,
+        //             },
+        //         });
+        //         const data = await response.json();
+
+        //         if (response.status === 200) {
+        //             console.log("The wallet data recieved is: ", data.data);
+        //             console.log("The type of data recieved are: ", typeof data.data);
+        //             if (data?.transactions) {
+        //                 setTransactions(data.transactions);
+        //             }
+        //             setWallet({
+        //                 real: {
+        //                     ...wallet.real,
+        //                     total: data.data.current_balance,
+        //                     profit: data.data.profit,
+        //                 },
+        //                 paper: {
+        //                     ...wallet.paper,
+        //                     total: data.data.current_balance,
+        //                     profit: data.data.profit,
+        //                 }
+        //             });
+        //         } else {
+        //             throw new Error('Failed to fetch transactions');
+        //         }
+        //     } catch (error) {
+        //         console.error(error);
+        //         router.push('/signin');
+        //     }
+        // }
+
         const fetchTransactions = async () => {
             try {
-                if (!account.username) {
-                    throw new Error('No account username found');
+                const response = await fetch("api/orders");
+                if (response?.status !== 200) {
+                    throw new Error(`Error: ${response.status} ${response.statusText}`);
                 }
-                const response = await fetch(`https://trading-bot-lmca.onrender.com/user/${account.username}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`,
-                    },
-                });
                 const data = await response.json();
-
-                if (response.status === 200) {
-                    console.log("The wallet data recieved is: ", data.data);
-                    console.log("The type of data recieved are: ", typeof data.data);
-                    if (data?.transactions) {
-                        setTransactions(data.transactions);
-                    }
-                    setWallet({
-                        real: {
-                            ...wallet.real,
-                            total: data.data.current_balance,
-                            profit: data.data.profit,
-                        },
-                        paper: {
-                            ...wallet.paper,
-                            total: data.data.current_balance,
-                            profit: data.data.profit,
-                        }
-                    });
-                } else {
-                    throw new Error('Failed to fetch transactions');
-                }
+                console.log(data);
+                const formattedTransactions = data.map((transaction: any) => ({
+                    transactionId: transaction.id,
+                    name: transaction.symbol,
+                    date: new Date(transaction.submitted_at),
+                    category: transaction.order_type,
+                    quantity: transaction.qty,
+                }));
+                setTransactions(formattedTransactions);
             } catch (error) {
                 console.error(error);
-                router.push('/signin');
+                // router.push('/signin');
             }
         }
 
@@ -357,7 +380,7 @@ export default function Wallet() {
                             <thead className="text-xs uppercase bg-gray-700 text-gray-400">
                                 <tr>
                                     <th scope="col" className="px-6 py-3">
-                                        Transaction ID
+                                        Transaction
                                     </th>
                                     <th scope="col" className="px-6 py-3">
                                         Date
@@ -366,7 +389,7 @@ export default function Wallet() {
                                         Category
                                     </th>
                                     <th scope="col" className="px-6 py-3">
-                                        Amount
+                                        Quantity
                                     </th>
                                 </tr>
                             </thead>
@@ -374,7 +397,7 @@ export default function Wallet() {
                                 {Array.isArray(transactions) && transactions.length > 0 && transactions.slice((currentPage - 1) * 10, currentPage * 10).map((transaction) => (
                                     <tr key={transaction?.transactionId} className="border-b bg-gray-800 border-gray-700 hover:bg-gray-600">
                                         <th scope="row" className="px-6 py-4 font-medium whitespace-nowrap">
-                                            <button onClick={() => handleDownloadReceipt(transaction?.transactionId)} className="font-medium text-blue-500 hover:underline">{transaction.transactionId}</button>
+                                            <button onClick={() => handleDownloadReceipt(transaction?.transactionId)} className="font-medium text-blue-500 hover:underline">{transaction?.name}</button>
                                         </th>
                                         <td className="px-6 py-4">
                                             {transaction.date.toDateString()}
@@ -383,7 +406,7 @@ export default function Wallet() {
                                             {transaction.category}
                                         </td>
                                         <td className="px-6 py-4">
-                                            {transaction.amount}
+                                            {transaction.quantity}
                                         </td>
                                     </tr>
                                 ))}
