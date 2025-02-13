@@ -13,7 +13,7 @@ export async function POST(req: Request) {
 
     const { api_key, private_key } = await req.json();
 
-    const response = await fetch(`${NEXT_PUBLIC_ALPACA_URL}/orders`, {
+    const response = await fetch(`${NEXT_PUBLIC_ALPACA_URL}/account`, {
       method: "GET",
       headers: {
         "APCA-API-KEY-ID": `${api_key}`,

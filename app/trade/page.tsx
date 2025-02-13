@@ -5,113 +5,38 @@ import { useState, useEffect } from 'react'
 import NavButton from '@/components/navButton'
 import BullModel from '@/components/bullModel'
 
+// Import context
+import { useAccount } from '@/context/AccountContext'
+
 // Some variables
 const maxPageNumbersToShow = 10;
 
+// Defining props
+interface TransactionProps {
+    transactionId: string;
+    name: string;
+    date: Date;
+    category: string;
+    quantity: number;
+}
+
 export default function Trade() {
-    const [type, setType] = useState('Real')
-    const [transactions, setTransactions] = useState([
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-        { transactionId: 'dfhf25s3', date: new Date(), category: 'Deposit', amount: 100 },
-        { transactionId: '5gdffg5b', date: new Date(), category: 'Withdraw', amount: 50 },
-    ])
+    const { account } = useAccount();
+    // const [type, setType] = useState('Real')
+    const [transactions, setTransactions] = useState<TransactionProps[]>([
+        { transactionId: '1', name: 'AAPL', date: new Date(), category: 'Buy', quantity: 10 },
+        { transactionId: '2', name: 'TSLA', date: new Date(), category: 'Sell', quantity: 5 },
+        { transactionId: '3', name: 'AMZN', date: new Date(), category: 'Buy', quantity: 15 },
+        { transactionId: '4', name: 'GOOGL', date: new Date(), category: 'Sell', quantity: 20 },
+        { transactionId: '5', name: 'MSFT', date: new Date(), category: 'Buy', quantity: 25 },
+    ]);
     const [totalPages, setTotalPages] = useState(Math.ceil(transactions.length / 10));
     const [currentPage, setCurrentPage] = useState(1);
     const [pageOffset, setPageOffset] = useState(0);
-    const [dropdown, setDropdown] = useState({ show: false, type: '' });
+    const [dropdown, setDropdown] = useState({
+        show: false,
+        // type: ''
+    });
 
     // Define functions
     const handlePreviousSet = () => {
@@ -139,8 +64,39 @@ export default function Trade() {
     useEffect(() => setTotalPages(Math.ceil(transactions.length / 10)), [transactions]);
 
     useEffect(() => {
-        // Fetch transactions
-    }, [type]);
+        const fetchTransactions = async () => {
+            const accountFromStorage = localStorage.getItem('account') ? JSON.parse(localStorage.getItem('account') as string) : null;
+            try {
+                const response = await fetch("api/transactions", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        api_key: accountFromStorage.api_key_public,
+                        private_key: accountFromStorage.api_key_private
+                    }),
+                });
+                if (response?.status !== 200) {
+                    throw new Error(`Error: ${response.status} ${response.statusText}`);
+                }
+                const data = await response.json();
+                const formattedTransactions = data.map((transaction: any) => ({
+                    transactionId: transaction.order_id,
+                    name: transaction.symbol,
+                    date: new Date(transaction.transaction_time),
+                    category: transaction.side == 'buy' ? 'Buy' : 'Sell',
+                    quantity: transaction.cum_qty,
+                }));
+                setTransactions(formattedTransactions);
+            } catch (error) {
+                console.error(error);
+                // router.push('/signin');
+            }
+        }
+
+        fetchTransactions();
+    }, []);
 
     return (
         <main>
@@ -159,18 +115,18 @@ export default function Trade() {
                     </svg>
                 </div>
 
-                <div className="relative pt-32 pb-2 md:pt-40 md:pb-4">
+                {/* <div className="relative pt-32 pb-2 md:pt-40 md:pb-4">
                     <div className='flex flex-row gap-8 justify-center'>
                         <NavButton task={() => setType('Real')} text='Real' type={type} />
                         <NavButton task={() => setType('Paper')} text='Paper' type={type} />
                     </div>
-                </div>
+                </div> */}
 
                 {/* <section className='absolute top-[5rem] left-[-10rem] z-[10] w-[99vw] h-[100vh]'> */}
                     <BullModel url="/models/bull_head/scene.gltf" />
                 {/* </section> */}
 
-                <div className="relative overflow-x-auto overflow-y-hidden my-[8rem] mt-[0rem]">
+                {account ? <div className="relative overflow-x-auto overflow-y-hidden my-[8rem] mt-[0rem]">
                     <div className="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
                         <div>
                             <button
@@ -189,7 +145,7 @@ export default function Trade() {
                                 >
                                     <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
                                 </svg>
-                                {dropdown.type}
+                                {/* {dropdown.type} */}
                                 <svg
                                     className="w-2.5 h-2.5 ms-2.5"
                                     aria-hidden="true"
@@ -218,7 +174,7 @@ export default function Trade() {
                                                 <div
                                                     className="flex items-center p-2 rounded hover:bg-gray-600"
                                                     onClick={() => {
-                                                        setDropdown({ ...dropdown, type, show: false });
+                                                        setDropdown({ ...dropdown, show: false });
                                                     }}
                                                 >
                                                     <input
@@ -227,8 +183,8 @@ export default function Trade() {
                                                         value={type}
                                                         name="filter-radio"
                                                         className="w-4 h-4 text-blue-600 focus:ring-blue-600 ring-offset-gray-800 focus:ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600"
-                                                        checked={dropdown.type === type}
-                                                        onChange={() => setDropdown({ ...dropdown, type })}
+                                                        // checked={dropdown.type === type}
+                                                        onChange={() => setDropdown({ ...dropdown })}
                                                     />
                                                     <label
                                                         htmlFor={`filter-radio-example-${index + 1}`}
@@ -273,7 +229,7 @@ export default function Trade() {
                             {transactions.slice((currentPage - 1) * 10, currentPage * 10).map((transaction) => (
                                 <tr key={transaction.transactionId} className="border-b bg-gray-800 border-gray-700 hover:bg-gray-600">
                                     <th scope="row" className="px-6 py-4 font-medium whitespace-nowrap">
-                                        <button onClick={() => handleDownloadReceipt(transaction.transactionId)} className="font-medium text-blue-500 hover:underline">{transaction.transactionId}</button>
+                                        <button onClick={() => handleDownloadReceipt(transaction.name)} className="font-medium text-blue-500 hover:underline">{transaction.name}</button>
                                     </th>
                                     <td className="px-6 py-4">
                                         {transaction.date.toDateString()}
@@ -282,7 +238,7 @@ export default function Trade() {
                                         {transaction.category}
                                     </td>
                                     <td className="px-6 py-4">
-                                        {transaction.amount}
+                                        {transaction.quantity}
                                     </td>
                                 </tr>
                             ))}
@@ -305,7 +261,7 @@ export default function Trade() {
                             </li>
                         </ul>
                     </nav>
-                </div>
+                </div> : <div className="text-center text-gray-400">Please sign in to view your transactions.</div>}
             </div>
         </main>
     )

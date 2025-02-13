@@ -1,4 +1,4 @@
-import React, { createContext, useContext, ReactNode, useState, use } from 'react';
+import React, { createContext, useContext, ReactNode, useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface AccountContextType {
@@ -28,13 +28,20 @@ export const AccountProvider: React.FC<{ children: ReactNode }> = ({ children })
     base_url: ''
   });
 
+  useEffect(() => {
+    const account = localStorage.getItem('account');
+    if (account) {
+      setAccount(JSON.parse(account));
+    }
+  }, []);
+
   const signup = async (username: string, email: string, password: string, api_key_private: string, api_key_public: string, base_url: string, confirmPassword: string) => {
     if (password !== confirmPassword) {
       alert('Passwords do not match');
       return;
     }
     try {
-      const response = await fetch('https://trading-bot-lmca.onrender.com/user/', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -45,7 +52,6 @@ export const AccountProvider: React.FC<{ children: ReactNode }> = ({ children })
       if (response.ok || response.status === 201) {
         const data = await response.json();
         setAccountId(data.id);
-        localStorage.setItem('jwtToken', data.access_token);
         setAccount({
           username: data.username,
           email: email,
@@ -55,12 +61,22 @@ export const AccountProvider: React.FC<{ children: ReactNode }> = ({ children })
           api_key_public: data.api_key_public,
           base_url: data.base_url
         })
+        localStorage.setItem('account', JSON.stringify({
+          accountId: data.id,
+          username: data.username,
+          email: email,
+          currentBalance: data.current_balance,
+          profit: data.profit,
+          api_key_private: data.api_key_private,
+          api_key_public: data.api_key_public,
+          base_url: data.base_url
+        }));
+        localStorage.setItem('jwtToken', data.access_token);
         router.push('/');
       } else {
         console.error('Account creation');
         alert('Account creation failed');
       }
-
     } catch (error) {
       console.error('Error:', error);
     }
@@ -68,7 +84,7 @@ export const AccountProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await fetch('https://trading-bot-lmca.onrender.com/login', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -81,7 +97,6 @@ export const AccountProvider: React.FC<{ children: ReactNode }> = ({ children })
 
       if (response.ok || response.status === 200) {
         const data = await response.json();
-        console.log("The login response recieved is: ", data);
         localStorage.setItem('jwtToken', data.access_token);
         setAccountId(data.id);
         setAccount({
@@ -94,6 +109,16 @@ export const AccountProvider: React.FC<{ children: ReactNode }> = ({ children })
           api_key_public: data.api_key_public,
           base_url: data.base_url
         })
+        localStorage.setItem('account', JSON.stringify({
+          accountId: data.id,
+          username: data.username,
+          email: email,
+          currentBalance: data.current_balance,
+          profit: data.profit,
+          api_key_private: data.api_key_private,
+          api_key_public: data.api_key_public,
+          base_url: data.base_url
+        }));
         router.push('/');
       } else {
         console.error('Login failed');
@@ -106,7 +131,7 @@ export const AccountProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   const logout = async () => {
     try {
-      const response = await fetch('https://trading-bot-lmca.onrender.com/logout', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/logout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

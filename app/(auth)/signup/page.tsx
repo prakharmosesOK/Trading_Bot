@@ -87,7 +87,7 @@ export default function SignUp() {
                             <input type="password" name="privateapi" id="privateapi" placeholder="Private API Key" value={privateApi} onChange={(e: any) => setPrivateApi(e.target.value)} className="block w-full p-3 text-md rounded-lg bg-black" />
                         </div>
                         <div className="py-1">
-                            <input type="text" name="privateapi" id="privateapi" placeholder="Private API Key" value={publicApi} onChange={(e: any) => setPublicApi(e.target.value)} className="block w-full p-3 text-md rounded-lg bg-black" />
+                            <input type="text" name="publicapi" id="publicapi" placeholder="Public API Key" value={publicApi} onChange={(e: any) => setPublicApi(e.target.value)} className="block w-full p-3 text-md rounded-lg bg-black" />
                         </div>
                         <div className="py-1">
                             <input className="block w-full p-3 text-md rounded-lg bg-black" type="password" name="password" id="password" placeholder="Password" value={password} onChange={(e: any) => setPassword(e.target.value)} />
